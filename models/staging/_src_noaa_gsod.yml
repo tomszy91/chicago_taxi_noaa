@@ -6,7 +6,1810 @@ sources:
       Includes global data obtained from the USAF Climatology Center. This dataset covers GSOD data between 1929 and present, collected from over 9000 stations
     database: bigquery-public-data
     tables:
+      - name: stations
+        description: >
+          Metadata directory for global weather stations participating in the NOAA GSOD network
+        columns:
+          - name: usaf
+            data_type: string
+            description: >
+              Air Force station identifier
+          - name: wban
+            data_type: string
+            description: >
+              Weather Bureau Army Navy identifier
+          - name: name
+            data_type: string
+            description: >
+              Station name, often referring to an airport or municipality
+          - name: country
+            data_type: string
+            description: >
+              FIPS 2-character country code
+          - name: state
+            data_type: string
+            description: >
+              US state post office code, if applicable
+          - name: call
+            data_type: string
+            description: >
+              ICAO call sign identifier, if available
+          - name: lat
+            data_type: float64
+            description: >
+              Latitude in decimal degrees
+          - name: lon
+            data_type: float64
+            description: >
+              Longitude in decimal degrees
+          - name: elev
+            data_type: string
+            description: >
+              Elevation in meters
+          - name: begin
+            data_type: string
+            description: >
+              Start date of recording history (YYYYMMDD)
+          - name: end
+            data_type: string
+            description: >
+              End date of recording history (YYYYMMDD).
       - name: gsod2025
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2024
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2023
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2022
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2021
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2020
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2019
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2018
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2017
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2016
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2015
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2014
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2013
+        description: Global Surface Summary of the Day - GSOD for 2025
+        columns:
+          - name: stn
+            data_type: string
+            description: >
+              Cloud - GSOD NOAA
+          - name: wban
+            data_type: string
+            description: >
+              WBAN number where applicable--this is the historical "Weather Bureau Air Force Navy" number - with WBAN being the acronym
+          - name: date
+            data_type: date
+            description: >
+              Date of the weather observations
+          - name: year
+            data_type: string
+            description: >
+              The year
+          - name: mo
+            data_type: string
+            description: >
+              The month
+          - name: da
+            data_type: string
+            description: >
+              The day
+          - name: temp
+            data_type: float64
+            description: >
+              Mean temperature for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_temp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean temperature
+          - name: dewp
+            data_type: float64
+            description: >
+              Mean dew point for the day in degrees Fahrenheit to tenths. Missing = 9999.9
+          - name: count_dewp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean dew point
+          - name: slp
+            data_type: float64
+            description: >
+              Mean sea level pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_slp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean sea level pressure
+          - name: stp
+            data_type: float64
+            description: >
+              Mean station pressure for the day in millibars to tenths. Missing = 9999.9
+          - name: count_stp
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean station pressure
+          - name: visib
+            data_type: float64
+            description: >
+              Mean visibility for the day in miles to tenths. Missing = 999.9
+          - name: count_visib
+            data_type: int64
+            description: >
+              Number of observations used in calculating mean visibility
+          - name: wdsp
+            data_type: string
+            description: >
+              Mean wind speed for the day in knots to tenths. Missing = 999.9
+          - name: count_wdsp
+            data_type: string
+            description: >
+              Number of observations used in calculating mean wind speed
+          - name: mxpsd
+            data_type: string
+            description: >
+              Maximum sustained wind speed reported for the day in knots to tenths. Missing = 999.9
+          - name: gust
+            data_type: float64
+            description: >
+              Maximum wind gust reported for the day in knots to tenths. Missing = 999.9
+          - name: max
+            data_type: float64
+            description: >
+              Maximum temperature reported during the day in Fahrenheit to tenths--time of max temp report varies by country and region, so this will sometimes not be the max for the calendar day. Missing = 9999.9
+          - name: flag_max
+            data_type: string
+            description: >
+              Blank indicates max temp was taken from the explicit max temp report and not from the 'hourly' data. * indicates max temp was derived from the hourly data (i.e., highest hourly or synoptic-reported temperature)
+          - name: min
+            data_type: float64
+            description: >
+              Minimum temperature reported during the day in Fahrenheit to tenths--time of min temp report varies by country and region, so this will sometimes not be the min for the calendar day. Missing = 9999.9
+          - name: flag_min
+            data_type: string
+            description: >
+              Blank indicates min temp was taken from the explicit min temp report and not from the 'hourly' data. * indicates min temp was derived from the hourly data (i.e., lowest hourly or synoptic-reported temperature)
+          - name: prcp
+            data_type: float64
+            description: >
+              Total precipitation (rain and/or melted snow) reported during the day in inches and hundredths; will usually not end with the midnight observation--i.e., may include latter part of previous day. .00 indicates no measurable precipitation (includes a trace). Missing = 99.99 Note: Many stations do not report '0' on days with no precipitation--therefore, '99.99' will often appear on these days. Also, for example, a station may only report a 6-hour amount for the period during which rain fell. See Flag field for source of data
+          - name: flag_prcp
+            data_type: string
+            description: >
+              A = 1 report of 6-hour precipitation amount B = Summation of 2 reports of 6-hour precipitation amount C = Summation of 3 reports of 6-hour precipitation amount D = Summation of 4 reports of 6-hour precipitation amount E = 1 report of 12-hour precipitation amount F = Summation of 2 reports of 12-hour precipitation amount G = 1 report of 24-hour precipitation amount H = Station reported '0' as the amount for the day (eg, from 6-hour reports), but also reported at least one occurrence of precipitation in hourly observations--this could indicate a trace occurred, but should be considered as incomplete data for the day. I = Station did not report any precip data for the day and did not report any occurrences of precipitation in its hourly observations--it's still possible that precip occurred but was not reported
+          - name: sndp
+            data_type: float64
+            description: >
+              Snow depth in inches to tenths--last report for the day if reported more than once. Missing = 999.9 Note: Most stations do not report '0' on days with no snow on the ground--therefore, '999.9' will often appear on these days
+          - name: fog
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: rain_drizzle
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: snow_ice_pellets
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: hail
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: thunder
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+          - name: tornado_funnel_cloud
+            data_type: string
+            description: >
+              Indicators (1 = yes, 0 = no/not reported) for the occurrence during the day
+      - name: gsod2012
         description: Global Surface Summary of the Day - GSOD for 2025
         columns:
           - name: stn

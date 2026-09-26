@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: stg_noaa__stations
+    description: >
+      Staged NOAA GSOD station metadata. One row per station (usaf/wban
+      pair), used to filter GSOD weather readings down to stations within
+      30km of downtown Chicago.
+    columns:
+      - name: stn
+        description: >
+          Station identifier (source column usaf). Joins to stn in
+          stg_noaa__gsod. Not guaranteed unique on its own — use stn_wban.
+      - name: wban
+        description: >
+          Weather Bureau Air Force Navy number. 99999 indicates the station
+          was never part of the US WBAN network; this is a valid value, not
+          a missing-data sentinel.
+      - name: stn_wban
+        description: >
+          Composite key (stn concatenated with wban) uniquely identifying
+          a station, per the ISD usaf+wban convention.
+        tests:
+          - unique
+          - not_null
+      - name: station_name
+        description: Station name as reported by NOAA.
+      - name: station_country
+        description: Country where the station is located.
+      - name: station_state
+        description: US state where the station is located, if applicable.
+      - name: station_call
+        description: Station call sign.
+      - name: latitude
+        description: Station latitude in decimal degrees.
+      - name: longitude
+        description: Station longitude in decimal degrees.
+      - name: geo_point
+        description: >
+          GEOGRAPHY point built from longitude/latitude, used for distance
+          filtering (e.g. selecting stations near Chicago).
+      - name: elevation
+        description: Station elevation, as reported by NOAA.
+      - name: start_date
+        description: >
+          Declared start of the station's operating period. Parsed from
+          YYYYMMDD; does not guarantee complete data within the range.
+      - name: end_date
+        description: >
+          Declared end of the station's operating period. Parsed from
+          YYYYMMDD; does not guarantee complete data within the range.

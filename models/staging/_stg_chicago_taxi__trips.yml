@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: stg_chicago_taxi__trips
+    description: >
+      Staged Chicago taxi trips from the public BigQuery dataset, cast to
+      consistent types. One row per trip.
+    columns:
+      - name: unique_key
+        description: Unique identifier for the trip.
+        tests:
+          - unique
+          - not_null
+      - name: taxi_id
+        description: Unique identifier for the taxi.
+      - name: trip_start_timestamp
+        description: When the trip started, rounded to the nearest 15 minutes.
+      - name: trip_end_timestamp
+        description: When the trip ended, rounded to the nearest 15 minutes.
+      - name: trip_seconds
+        description: Duration of the trip in seconds.
+      - name: trip_miles
+        description: Distance of the trip in miles.
+      - name: pickup_census_tract
+        description: >
+          Census tract where the trip began. Hidden (null) for some trips
+          for privacy.
+      - name: dropoff_census_tract
+        description: >
+          Census tract where the trip ended. Hidden (null) for some trips
+          for privacy.
+      - name: pickup_community_area
+        description: Community area where the trip began.
+      - name: dropoff_community_area
+        description: Community area where the trip ended.
+      - name: fare
+        description: Fare for the trip, excluding tips, tolls, and extras.
+      - name: tips
+        description: >
+          Tip amount. Cash tips are generally not recorded, so this
+          understates true tipping.
+      - name: tolls
+        description: Tolls charged for the trip.
+      - name: extras
+        description: Extra charges for the trip.
+      - name: trip_total
+        description: Total cost of the trip (fare + tips + tolls + extras).
+      - name: payment_type
+        description: How the trip was paid for.
+      - name: company
+        description: Taxi company operating the trip.
+      - name: pickup_latitude
+        description: >
+          Latitude of the center of the pickup census tract, or community
+          area if the tract is hidden for privacy.
+      - name: pickup_longitude
+        description: >
+          Longitude of the center of the pickup census tract, or community
+          area if the tract is hidden for privacy.
+      - name: pickup_location
+        description: Pickup location as a formatted point string.
+      - name: dropoff_latitude
+        description: >
+          Latitude of the center of the dropoff census tract, or community
+          area if the tract is hidden for privacy.
+      - name: dropoff_longitude
+        description: >
+          Longitude of the center of the dropoff census tract, or community
+          area if the tract is hidden for privacy.
+      - name: dropoff_location
+        description: Dropoff location as a formatted point string.
+
