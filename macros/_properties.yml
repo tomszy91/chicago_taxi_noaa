@@ -1,0 +1,19 @@
+macros:
+  - name: generate_stg_model_with_casts
+    description: >
+      A macro that generates model basing on provided source. It puts table columns into cast function to data type provided by source
+    arguments:
+      - name: source_name
+        type: dataset
+        description: The name of the data source you want to select
+      - name: table_name
+        type: table
+        description: The name of the table you want to convert
+
+  - name: get_noaa_years
+    description: >
+      A macro that checks data stored in NOAA GSOD source. It verifies if data range available covers year range from Chicago Taxi Trips
+    
+  - name: get_taxi_year_range
+    description: >
+      A macro that checks maximum and minimum year available in Chicago Taxi Trips
