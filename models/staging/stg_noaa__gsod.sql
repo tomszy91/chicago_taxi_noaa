@@ -40,6 +40,7 @@ with
             where
                 concat(stn, "_", wban) in (
                     select concat(usaf, "_", wban) as stn_wban
+                    -- TODO change source to ref
                     from `bigquery-public-data.noaa_gsod.stations`
                     where
                         st_distance(
