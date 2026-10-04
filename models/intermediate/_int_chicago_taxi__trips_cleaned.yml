@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: int_chicago_taxi__trips_cleaned
+    description: >
+      Cleaned Chicago taxi trips, filtered to rows with a usable distance,
+      duration, and total fare. Trips with a source trip_miles of 0 but
+      valid pickup/dropoff coordinates have their distance reconstructed
+      as a straight-line (great-circle) distance via ST_DISTANCE — this
+      systematically understates true driven distance since it ignores
+      street routing. Roughly a quarter of source rows report trip_miles
+      as 0 rather than null; this is concentrated in specific taxi
+      companies (e.g. Taxi Affiliation Services, Blue Ribbon Taxi
+      Association, Chicago Elite Cab Corp.), not spread evenly, so
+      excluded/reconstructed rows are not a random sample of all trips.
+      Trips are dropped from this model where trip_total is null, where
+      distance could not be determined or reconstructed, or where
+      trip_seconds is null or zero.
+    columns:
+      - name: unique_key
+        description: Unique identifier for the trip.
+        tests:
+          - unique
+          - not_null
+      - name: taxi_id
+        description: Unique identifier for the taxi.
+      - name: trip_start_timestamp
+        description: When the trip started, rounded to the nearest 15 minutes.
+      - name: trip_end_timestamp
+        description: When the trip ended, rounded to the nearest 15 minutes.
+      - name: trip_seconds
+        description: >
+          Duration of the trip in seconds. Rows with null or zero duration
+          are excluded from this model.
+        tests:
+          - not_null
+      - name: trip_miles_corrected
+        description: >
+          Trip distance in miles. Equal to the source trip_miles where it
+          was greater than 0. Where the source value was 0 and pickup/
+          dropoff coordinates were present, this is instead a straight-line
+          distance computed from those coordinates — see
+          trip_miles_was_reconstructed to distinguish the two. Rows where
+          neither was available are excluded from this model.
+        tests:
+          - not_null
+      - name: trip_miles_was_reconstructed
+        description: >
+          True where trip_miles_corrected was computed as a straight-line
+          distance from coordinates rather than taken from the source
+          trip_miles. Straight-line distance is shorter than actual driven
+          distance, so this flag should be considered before comparing
+          distances across rows or correlating with other variables (e.g.
+          weather).
+      - name: fare
+        description: Fare for the trip, excluding tips, tolls, and extras.
+      - name: tips
+        description: >
+          Tip amount. Cash tips are generally not recorded, so this
+          understates true tipping.
+      - name: tolls
+        description: Tolls charged for the trip.
+      - name: extras
+        description: Extra charges for the trip.
+      - name: trip_total
+        description: >
+          Total cost of the trip (fare + tips + tolls + extras). Rows with
+          a null total are excluded from this model.
+        tests:
+          - not_null
+      - name: payment_type
+        description: How the trip was paid for.
+      - name: company
+        description: >
+          Taxi company operating the trip. Data completeness for distance
+          varies significantly by company — see model description.
+      - name: pickup_location
+        description: >
+          Pickup point as a GEOGRAPHY, built from pickup_longitude/
+          pickup_latitude. Null where source coordinates were missing.
+      - name: dropoff_location
+        description: >
+          Dropoff point as a GEOGRAPHY, built from dropoff_longitude/
+          dropoff_latitude. Null where source coordinates were missing.

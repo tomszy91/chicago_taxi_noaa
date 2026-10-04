@@ -1,0 +1,102 @@
+version: 2
+
+models:
+  - name: int_noaa__gsod_daily
+    description: >
+      Daily weather aggregates across all NOAA GSOD stations within 30km
+      of downtown Chicago, built from int_noaa__gsod_cleaned. One row per
+      calendar date. Continuous measures are averaged across stations that
+      reported a value that day; binary phenomena are summarized both as
+      "occurred anywhere" (*_any) and as the share of reporting stations
+      that confirmed it (*_station_ratio), since events like hail or
+      thunder can be highly localized and a single station's reading may
+      not represent the whole area. Intended to be joined against
+      int_chicago_taxi__trips_daily on date.
+    columns:
+      - name: date
+        description: Calendar date of the observations.
+        tests:
+          - unique
+          - not_null
+      - name: station_count
+        description: >
+          Number of distinct stations (stn_wban) that reported any data
+          for this date, out of the 20 stations within 30km of downtown
+          Chicago.
+      - name: avg_temperature
+        description: >
+          Mean temperature for the day, degrees Fahrenheit, averaged
+          across stations with a non-null reading. See
+          temperature_station_count for how many stations that was.
+      - name: temperature_station_count
+        description: >
+          Number of stations with a non-null mean_temperature for this
+          date. Low counts mean avg_temperature rests on a small sample.
+      - name: avg_dew_point
+        description: Mean dew point for the day, degrees Fahrenheit, averaged across reporting stations.
+      - name: avg_sea_level_pressure
+        description: Mean sea-level pressure for the day, millibars, averaged across reporting stations.
+      - name: avg_station_pressure
+        description: >
+          Mean station pressure for the day, millibars, averaged across
+          reporting stations. See int_noaa__gsod_cleaned for the
+          correction applied to this field upstream.
+      - name: avg_visibility
+        description: Mean visibility for the day, miles, averaged across reporting stations.
+      - name: avg_wind_speed
+        description: Mean wind speed for the day, knots, averaged across reporting stations.
+      - name: max_wind_gust
+        description: >
+          Strongest wind gust reported by any station for this date,
+          knots (max, not average — intended to capture the most extreme
+          reading in the area rather than smooth it out).
+      - name: avg_max_temperature
+        description: Average, across stations, of each station's maximum reported temperature for the day.
+      - name: avg_min_temperature
+        description: Average, across stations, of each station's minimum reported temperature for the day.
+      - name: avg_precipitation
+        description: >
+          Mean precipitation for the day, inches, averaged across stations
+          with a non-null reading.
+      - name: max_snow_depth
+        description: >
+          Deepest snow depth reported by any station for this date, inches
+          (max, not average — intended to capture whether snow was lying
+          anywhere nearby rather than smooth it out across stations that
+          may not have measured it).
+      - name: fog_any
+        description: True if any station within range reported fog on this date.
+      - name: rain_drizzle_any
+        description: True if any station within range reported rain or drizzle on this date.
+      - name: snow_ice_pellets_any
+        description: True if any station within range reported snow or ice pellets on this date.
+      - name: hail_any
+        description: True if any station within range reported hail on this date.
+      - name: thunder_any
+        description: True if any station within range reported thunder on this date.
+      - name: tornado_funnel_cloud_any
+        description: True if any station within range reported a tornado or funnel cloud on this date.
+      - name: fog_station_ratio
+        description: >
+          Share of stations with a non-null fog reading that reported fog
+          on this date (0 to 1).
+      - name: rain_drizzle_station_ratio
+        description: >
+          Share of stations with a non-null rain_drizzle reading that
+          reported rain or drizzle on this date (0 to 1).
+      - name: snow_ice_pellets_station_ratio
+        description: >
+          Share of stations with a non-null snow_ice_pellets reading that
+          reported snow or ice pellets on this date (0 to 1).
+      - name: hail_station_ratio
+        description: >
+          Share of stations with a non-null hail reading that reported
+          hail on this date (0 to 1).
+      - name: thunder_station_ratio
+        description: >
+          Share of stations with a non-null thunder reading that reported
+          thunder on this date (0 to 1).
+      - name: tornado_funnel_cloud_station_ratio
+        description: >
+          Share of stations with a non-null tornado_funnel_cloud reading
+          that reported one on this date (0 to 1).

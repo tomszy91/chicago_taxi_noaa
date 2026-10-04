@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: int_chicago_taxi__trips_daily
+    description: >
+      Daily aggregates of Chicago taxi trips, built from
+      int_chicago_taxi__trips_cleaned, intended to be joined against daily
+      NOAA weather data on trip_date. One row per calendar date.
+    columns:
+      - name: trip_date
+        description: Calendar date the trips started on (date(trip_start_timestamp)).
+        tests:
+          - unique
+          - not_null
+      - name: total_trips
+        description: Total number of trips that started on this date.
+      - name: avg_trip_seconds
+        description: Average trip duration in seconds across trips on this date.
+      - name: sum_trip_miles
+        description: >
+          Total distance across trips on this date, in miles. Includes
+          both source-reported and reconstructed distances (see
+          sum_trip_miles_reconstructed).
+      - name: avg_trip_miles
+        description: >
+          Average distance per trip on this date, in miles. Includes both
+          source-reported and reconstructed distances.
+      - name: sum_trip_miles_reconstructed
+        description: >
+          Portion of sum_trip_miles coming from trips where distance was
+          reconstructed as a straight-line distance (source trip_miles was
+          0). This systematically understates true driven distance.
+      - name: sum_trip_miles_not_reconstructed
+        description: >
+          Portion of sum_trip_miles coming from trips with a genuine
+          source-reported trip_miles value.
+      - name: total_reconstructed_trips
+        description: >
+          Number of trips on this date whose distance was reconstructed
+          from coordinates rather than taken from the source trip_miles.
+      - name: total_not_reconstructed_trips
+        description: Number of trips on this date with a genuine source-reported distance.
+      - name: avg_trip_total
+        description: Average total fare (fare + tips + tolls + extras) per trip on this date.
+      - name: sum_trip_total
+        description: Total fare revenue (fare + tips + tolls + extras) across trips on this date.
