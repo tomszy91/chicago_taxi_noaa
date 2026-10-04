@@ -1,4 +1,5 @@
 {% set noaa_years = get_noaa_years() %}
+-- depends_on: {{ ref('stg_noaa__stations') }}
 
 with
     source as (
@@ -39,7 +40,7 @@ with
             from {{ source("noaa_gsod", "gsod" ~ year) }}
             where
                 concat(stn, "_", wban) in (
-                    select concat(usaf, "_", wban) as stn_wban
+                    select concat(stn, "_", wban) as stn_wban
                     from {{ ref("stg_noaa__stations") }}
                     where
                         st_distance(

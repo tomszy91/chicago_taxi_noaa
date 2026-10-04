@@ -13,7 +13,7 @@ with
             cast(call as string) as station_call,
             cast(lat as float64) as latitude,
             cast(lon as float64) as longitude,
-            st_geopoint(cast(lon as float64), cast(lat as float64)) as geo_point,
+            st_geogpoint(cast(lon as float64), cast(lat as float64)) as geo_point,
             cast(elev as string) as elevation,
             parse_date('%Y%m%d', cast(begin as string)) as start_date,
             parse_date('%Y%m%d', cast(`end` as string)) as end_date
