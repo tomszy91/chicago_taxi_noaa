@@ -6,7 +6,7 @@ with
         (select
             cast(usaf as string) as stn,
             cast(wban as string) as wban,
-            concat(stn, "_", wban) as stn_wban,
+            concat(usaf, "_", wban) as stn_wban,
             cast(name as string) as station_name,
             cast(country as string) as station_country,
             cast(state as string) as station_state,
