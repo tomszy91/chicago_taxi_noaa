@@ -5,10 +5,7 @@ models:
     description: >
       Staged NOAA GSOD daily weather observations, unioned across yearly
       source tables and filtered to stations within 30km of downtown
-      Chicago. One row per station per day. Missing-value sentinels
-      (9999.9 / 999.9 / 99.99) are converted to null; mean_station_pressure
-      is additionally corrected for a known parsing artifact (leading
-      digit dropped) where cross-validated against mean_sea_level_pressure.
+      Chicago. One row per station per day.
     columns:
       - name: stn
         description: Station identifier (source column stn). Joins to stg_noaa__stations.stn.
@@ -31,42 +28,32 @@ models:
         description: Observation day.
       - name: mean_temperature
         description: >
-          Mean temperature for the day, degrees Fahrenheit. Null where
-          count_temperature is 0.
+          Mean temperature for the day, degrees Fahrenheit.
       - name: count_temperature
         description: Number of observations used to calculate mean_temperature.
       - name: mean_dew_point
         description: >
-          Mean dew point for the day, degrees Fahrenheit. Null where
-          count_dew_point is 0.
+          Mean dew point for the day, degrees Fahrenheit.
       - name: count_dew_point
         description: Number of observations used to calculate mean_dew_point.
       - name: mean_sea_level_pressure
         description: >
-          Mean sea-level pressure for the day, millibars. Null where
-          count_sea_level_pressure is 0.
+          Mean sea-level pressure for the day, millibars. 
       - name: count_sea_level_pressure
         description: Number of observations used to calculate mean_sea_level_pressure.
       - name: mean_station_pressure
         description: >
-          Mean station pressure for the day, millibars. Roughly 28% of
-          post-2019 records carry a source parsing artifact where the
-          leading "1" is dropped (e.g. 1013.2 becomes 13.2); corrected by
-          adding 1000 where cross-validated against
-          mean_sea_level_pressure (covers ~92% of affected records).
-          Remaining unverifiable cases are null.
+          Mean station pressure for the day, millibars.
       - name: count_station_pressure
         description: Number of observations used to calculate mean_station_pressure.
       - name: mean_visibility
         description: >
-          Mean visibility for the day, miles. Null where count_visibility
-          is 0.
+          Mean visibility for the day, miles. 
       - name: count_visibility
         description: Number of observations used to calculate mean_visibility.
       - name: mean_wind_speed
         description: >
-          Mean wind speed for the day, knots. Null where count_wind_speed
-          is 0.
+          Mean wind speed for the day, knots.
       - name: count_wind_speed
         description: Number of observations used to calculate mean_wind_speed.
       - name: max_wind_speed
@@ -75,33 +62,26 @@ models:
         description: Maximum wind gust for the day, knots.
       - name: max_temperature
         description: >
-          Maximum temperature reported during the day. Time of report
-          varies by station, so this may not reflect the calendar-day max.
+          Maximum temperature reported during the day.
       - name: flag_max_temperature
         description: >
           Blank if max_temperature came from the explicit max-temp report;
           "*" if derived from hourly data.
       - name: min_temperature
         description: >
-          Minimum temperature reported during the day. Time of report
-          varies by station, so this may not reflect the calendar-day min.
+          Minimum temperature reported during the day.
       - name: flag_min_temperature
         description: >
           Blank if min_temperature came from the explicit min-temp report;
           "*" if derived from hourly data.
       - name: precipitation
         description: >
-          Total precipitation for the day, inches. Null where unreported
-          and hourly data also showed no occurrence (flag "I"); 0 where
-          reported as 0 but hourly data suggests a possible trace
-          (flag "H").
+          Total precipitation for the day, inches.
       - name: flag_precipitation
         description: Source flag indicating how precipitation was reported/aggregated.
       - name: snow_depth
         description: >
-          Snow depth for the day, inches. Null where unreported and
-          snow_ice_pellets indicates precipitation occurred (ambiguous);
-          0 where unreported and snow_ice_pellets indicates none.
+          Snow depth for the day, inches.
       - name: fog
         description: Whether fog occurred during the day.
       - name: rain_drizzle
