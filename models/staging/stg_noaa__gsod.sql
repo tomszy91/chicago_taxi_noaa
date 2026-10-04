@@ -1,4 +1,5 @@
 {% set noaa_years = get_noaa_years() %}
+-- depends_on: {{ ref('stg_noaa__stations') }}
 
 with
     source as (
@@ -39,12 +40,12 @@ with
             from {{ source("noaa_gsod", "gsod" ~ year) }}
             where
                 concat(stn, "_", wban) in (
-                    select concat(usaf, "_", wban) as stn_wban
-                    -- TODO change source to ref
-                    from `bigquery-public-data.noaa_gsod.stations`
+                    select concat(stn, "_", wban) as stn_wban
+                    from {{ ref("stg_noaa__stations") }}
                     where
                         st_distance(
-                            st_geogpoint(lon, lat), st_geogpoint(-87.623177, 41.881832)
+                            st_geogpoint(longitude, latitude),
+                            st_geogpoint(-87.623177, 41.881832)
                         )
                         <= 30000
                 )
@@ -76,7 +77,7 @@ with
             cast(visib as float64) as mean_visibility,
             cast(count_visib as int64) as count_visibility,
             cast(wdsp as string) as mean_wind_speed,
-            cast(count_wdsp as string) as count_wind_speed,
+            cast(count_wdsp as int64) as count_wind_speed,
             cast(mxpsd as string) as max_wind_speed,
             cast(gust as float64) as max_wind_gust,
             cast(max as float64) as max_temperature,
@@ -95,4 +96,5 @@ with
         from source
     )
 
-select * from renamed
+select *
+from renamed

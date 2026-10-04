@@ -1,8 +1,8 @@
 {{ config(
     partition_by={
-        "field": "date",
+        "field": "trip_start_timestamp",
         "data_type": "timestamp",
-        "granularity": "day"
+        "granularity": "year"
     }
 ) }}
 

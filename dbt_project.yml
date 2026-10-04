@@ -35,5 +35,5 @@ models:
       +materialized: view
       +schema: stg
     intermediate:
-      +marialized: table
+      +materialized: table
       +schema: int

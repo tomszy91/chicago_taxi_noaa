@@ -1,5 +1,5 @@
 with source as (
-    select * from {{ source("chicago_taxi_trips", "taxi_trips") }}
+    select distinct * from {{ source("chicago_taxi_trips", "taxi_trips") }}
 ),
 
 renamed as (
