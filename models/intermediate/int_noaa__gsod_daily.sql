@@ -7,7 +7,7 @@ daily as (
     select
         date,
         count(distinct stn_wban) as station_count,
-      
+        
         avg(mean_temperature) as avg_temperature,
         count(mean_temperature) as temperature_station_count,  
 
