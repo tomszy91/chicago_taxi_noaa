@@ -76,7 +76,7 @@ with
             cast(count_stp as int64) as count_station_pressure,
             cast(visib as float64) as mean_visibility,
             cast(count_visib as int64) as count_visibility,
-            cast(wdsp as string) as mean_wind_speed,
+            cast(wdsp as float64) as mean_wind_speed,
             cast(count_wdsp as int64) as count_wind_speed,
             cast(mxpsd as string) as max_wind_speed,
             cast(gust as float64) as max_wind_gust,
