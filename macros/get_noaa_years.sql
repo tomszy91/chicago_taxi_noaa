@@ -1,7 +1,12 @@
 {% macro get_noaa_years() %}
 
+    {% set available_noaa_years = range(2013, 2026) | list %}
+
+    {% if not execute %}
+        {{ return(available_noaa_years) }}
+    {% endif %}
+
     {% set taxi_years = get_taxi_year_range() %}
-    {% set available_noaa_years = range(2013, 2025) | list %}
 
     {% set missing_years = [] %}
     {% for year in taxi_years %}
