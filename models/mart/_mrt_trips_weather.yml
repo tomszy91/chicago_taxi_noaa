@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: mrt_trips_weather
+    description: >
+      Daily Chicago taxi activity joined with daily weather aggregates
+      (NOAA GSOD stations within 30km of downtown Chicago), restricted to
+      a single year. The year is chosen at build time: the current
+      calendar year if it is present in the NOAA year range returned by
+      get_noaa_years(), otherwise the last year of that range. One row per
+      calendar date, taxi-driven (left join), so dates with taxi trips but
+      no weather rows keep null weather columns.
+      Distance metrics mix source-reported distances with straight-line
+      reconstructions (see int_chicago_taxi__trips_cleaned), which
+      understate real driven distance; this matters when correlating
+      distance with weather. Trips with incomplete data (no total, no
+      duration, no recoverable distance) are excluded upstream, so
+      totals are not 100% of Chicago taxi traffic.
+    columns:
+      - name: date
+        description: Calendar date (trip start date).
+        tests:
+          - unique
+          - not_null
+      - name: year
+        description: Calendar year of the date.
+      - name: month
+        description: Calendar month of the date (1-12).
+      - name: day
+        description: Day of the month.
+      - name: day_of_week
+        description: ISO day of week (1 = Monday ... 7 = Sunday).
+        tests:
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6, 7]
+              quote: false
+      - name: total_trips
+        description: Number of cleaned taxi trips that started on this date.
+      - name: avg_trip_seconds
+        description: Average trip duration in seconds, rounded to 2 decimals.
+      - name: sum_trip_miles
+        description: >
+          Total distance in miles across trips on this date, rounded to
+          2 decimals. Includes reconstructed straight-line distances.
+      - name: avg_trip_miles
+        description: >
+          Average distance per trip in miles, rounded to 2 decimals.
+          Includes reconstructed straight-line distances.
+      - name: avg_trip_total
+        description: Average total fare (fare + tips + tolls + extras) per trip, rounded to 2 decimals.
+      - name: sum_trip_total
+        description: Total fare revenue across trips on this date, rounded to 2 decimals.
+      - name: weather_station_count
+        description: >
+          Number of weather stations that reported data for this date.
+          Null if no weather data exists for the date. Low values mean
+          the weather metrics rest on a small sample.
+      - name: avg_temperature
+        description: Mean daily temperature in degrees Fahrenheit, averaged across stations.
+      - name: avg_max_temperature
+        description: Average across stations of the daily maximum temperature, degrees Fahrenheit.
+      - name: avg_min_temperature
+        description: Average across stations of the daily minimum temperature, degrees Fahrenheit.
+      - name: avg_precipitation
+        description: Mean daily precipitation in inches, averaged across stations with a reading.
+      - name: avg_wind_speed
+        description: Mean daily wind speed in knots, averaged across stations.
+      - name: max_wind_gust
+        description: Strongest wind gust (knots) reported by any station on this date.
+      - name: max_snow_depth
+        description: Deepest snow depth (inches) reported by any station on this date.
