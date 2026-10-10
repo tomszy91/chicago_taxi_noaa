@@ -82,5 +82,4 @@ with
             and trip_seconds != 0
     )
 
-select *
-from cleaned
+select * from cleaned

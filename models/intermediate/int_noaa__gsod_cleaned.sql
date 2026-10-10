@@ -58,14 +58,16 @@ with
             case
                 when count_wind_speed = 0
                 then null
-                else cast(mean_wind_speed as float64)
+                else mean_wind_speed
             end as mean_wind_speed,
             count_wind_speed,
             case
-                when count_wind_speed = 0 then null else cast(max_wind_speed as float64)
+                when count_wind_speed = 0 then null else max_wind_speed
             end as max_wind_speed,
             case
-                when count_wind_speed = 0 then null else max_wind_gust
+                when count_wind_speed = 0 then null
+                when max_wind_gust = 999.9 then null
+                else max_wind_gust
             end as max_wind_gust,
             case
                 when count_temperature = 0 then null else max_temperature
@@ -107,5 +109,4 @@ with
         from source
     )
 
-select *
-from cleared
+select * from cleared
