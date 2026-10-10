@@ -9,9 +9,11 @@
         from {{ taxi_source }}
     {% endset %}
 
-    {% set result = run_query(sql) %}
+    
 
     {% if execute %}
+        {% set result = run_query(sql) %}
+        
         {% set max_year = result.columns["max_year"].values()[0] %}
         {% set min_year = result.columns["min_year"].values()[0] %}
         {% set year_range = range(min_year, max_year + 1) | list %}
