@@ -5,7 +5,7 @@ source as (
 
 daily as (
     select
-        date,
+        date(date) as date,
         count(distinct stn_wban) as station_count,
         
         avg(mean_temperature) as avg_temperature,
@@ -19,7 +19,7 @@ daily as (
         max(max_wind_gust) as max_wind_gust, 
         avg(max_temperature) as avg_max_temperature,
         avg(min_temperature) as avg_min_temperature,
-        sum(precipitation) / nullif(count(precipitation), 0) as avg_precipitation,
+        sum(precipitation) / nullif(countif(precipitation > 0), 0) as avg_precipitation,
         max(snow_depth) as max_snow_depth, 
 
         logical_or(fog) as fog_any,
